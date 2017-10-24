@@ -1,0 +1,31 @@
+<resources>
+
+
+    <style name="P24MobileLibTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="actionBarStyle">@style/P24MobileLibActionBarStyle</item>
+    </style>
+
+    <style name="P24MobileLibActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/actionBarBackground</item>
+        <item name="titleTextStyle">@style/P24MobileLibTitleTextStyle</item>
+    </style>
+
+
+    <style name="P24MobileLibTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/actionBarTextColor</item>
+    </style>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+</resources>

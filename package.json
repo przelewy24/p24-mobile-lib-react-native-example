@@ -1,0 +1,13 @@
+{
+  "name": "P24Example",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react": "^16.0.0-beta.5",
+    "react-native": "^0.49.3",
+    "react-native-button": "^1.6.0"
+  }
+}
