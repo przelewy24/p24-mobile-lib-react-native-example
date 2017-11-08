@@ -51,8 +51,11 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
         this.promise = promise;
 
         TrnRequestParams params = TrnRequestParams.create(trnRequestParams.getString("token"))
-                .setSandbox(trnRequestParams.getBoolean("isSandbox"))
-                .setSettingsParams(getSettingsParams(trnRequestParams.getMap("settingsParams")));
+                .setSandbox(trnRequestParams.getBoolean("isSandbox"));
+
+        if (trnRequestParams.hasKey("settingsParams")) {
+            params.setSettingsParams(getSettingsParams(trnRequestParams.getMap("settingsParams")));
+        }
 
         Intent intent = TransferActivity.getIntentForTrnRequest(getCurrentActivity(), params);
         getCurrentActivity().startActivityForResult(intent, P24_ACTIVITY_CODE);
@@ -63,8 +66,11 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
         this.promise = promise;
 
         TrnDirectParams params = TrnDirectParams.create(getPaymentParams(trnDirectParams.getMap("transactionParams")))
-                .setSandbox(trnDirectParams.getBoolean("isSandbox"))
-                .setSettingsParams(getSettingsParams(trnDirectParams.getMap("settingsParams")));
+                .setSandbox(trnDirectParams.getBoolean("isSandbox"));
+
+        if (trnDirectParams.hasKey("settingsParams")) {
+            params.setSettingsParams(getSettingsParams(trnDirectParams.getMap("settingsParams")));
+        }
 
         Intent intent = TransferActivity.getIntentForTrnDirect(getCurrentActivity(), params);
         getCurrentActivity().startActivityForResult(intent, P24_ACTIVITY_CODE);
@@ -74,8 +80,11 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
     public void startExpress(ReadableMap expressParams, Promise promise) {
         this.promise = promise;
 
-        ExpressParams params = ExpressParams.create(expressParams.getString("url"))
-                .setSettingsParams(getSettingsParams(expressParams.getMap("settingsParams")));
+        ExpressParams params = ExpressParams.create(expressParams.getString("url"));
+
+        if (expressParams.hasKey("settingsParams")) {
+            params.setSettingsParams(getSettingsParams(expressParams.getMap("settingsParams")));
+        }
 
         Intent intent = TransferActivity.getIntentForExpress(getCurrentActivity(), params);
         getCurrentActivity().startActivityForResult(intent, P24_ACTIVITY_CODE);
@@ -135,10 +144,23 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
 
     private SettingsParams getSettingsParams(ReadableMap map) {
         SettingsParams settingsParams = new SettingsParams();
-        settingsParams.setSaveBankCredentials(map.getBoolean("saveBankCredentials"));
-        settingsParams.setReadSmsPasswords(map.getBoolean("readSmsPasswords"));
-        settingsParams.setEnableBanksRwd(map.getBoolean("enableBanksRwd"));
-        settingsParams.setBanksRwdConfigUrl(map.getString("banksRwdConfigUrl"));
+
+        if (map.hasKey("saveBankCredentials")) {
+            settingsParams.setSaveBankCredentials(map.getBoolean("saveBankCredentials"));
+        }
+
+        if (map.hasKey("readSmsPasswords")) {
+            settingsParams.setReadSmsPasswords(map.getBoolean("readSmsPasswords"));
+        }
+
+        if (map.hasKey("enableBanksRwd")) {
+            settingsParams.setEnableBanksRwd(map.getBoolean("enableBanksRwd"));
+        }
+
+        if (map.hasKey("banksRwdConfigUrl")) {
+            settingsParams.setBanksRwdConfigUrl(map.getString("banksRwdConfigUrl"));
+        }
+
         return settingsParams;
     }
 
