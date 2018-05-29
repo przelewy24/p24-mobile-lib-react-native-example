@@ -13,7 +13,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 
-import pl.przelewy24.p24lib.settings.SettingsParams;
+import pl.przelewy24.p24lib.settings.SdkConfig;
 import pl.przelewy24.p24lib.transfer.TransferActivity;
 import pl.przelewy24.p24lib.transfer.TransferResult;
 import pl.przelewy24.p24lib.transfer.direct.TransactionParams;
@@ -47,15 +47,16 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
     }
 
     @ReactMethod
+    public void setCertificatePinningEnabled(boolean isEnabled) {
+        SdkConfig.setCertificatePinningEnabled(isEnabled);
+    }
+
+    @ReactMethod
     public void startTrnRequest(ReadableMap trnRequestParams, Promise promise) {
         this.promise = promise;
 
         TrnRequestParams params = TrnRequestParams.create(trnRequestParams.getString("token"))
                 .setSandbox(trnRequestParams.getBoolean("isSandbox"));
-
-        if (trnRequestParams.hasKey("settingsParams")) {
-            params.setSettingsParams(getSettingsParams(trnRequestParams.getMap("settingsParams")));
-        }
 
         Intent intent = TransferActivity.getIntentForTrnRequest(getCurrentActivity(), params);
         getCurrentActivity().startActivityForResult(intent, P24_ACTIVITY_CODE);
@@ -68,10 +69,6 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
         TrnDirectParams params = TrnDirectParams.create(getPaymentParams(trnDirectParams.getMap("transactionParams")))
                 .setSandbox(trnDirectParams.getBoolean("isSandbox"));
 
-        if (trnDirectParams.hasKey("settingsParams")) {
-            params.setSettingsParams(getSettingsParams(trnDirectParams.getMap("settingsParams")));
-        }
-
         Intent intent = TransferActivity.getIntentForTrnDirect(getCurrentActivity(), params);
         getCurrentActivity().startActivityForResult(intent, P24_ACTIVITY_CODE);
     }
@@ -81,10 +78,6 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
         this.promise = promise;
 
         ExpressParams params = ExpressParams.create(expressParams.getString("url"));
-
-        if (expressParams.hasKey("settingsParams")) {
-            params.setSettingsParams(getSettingsParams(expressParams.getMap("settingsParams")));
-        }
 
         Intent intent = TransferActivity.getIntentForExpress(getCurrentActivity(), params);
         getCurrentActivity().startActivityForResult(intent, P24_ACTIVITY_CODE);
@@ -140,28 +133,6 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
         }
 
         return builder.build();
-    }
-
-    private SettingsParams getSettingsParams(ReadableMap map) {
-        SettingsParams settingsParams = new SettingsParams();
-
-        if (map.hasKey("saveBankCredentials")) {
-            settingsParams.setSaveBankCredentials(map.getBoolean("saveBankCredentials"));
-        }
-
-        if (map.hasKey("readSmsPasswords")) {
-            settingsParams.setReadSmsPasswords(map.getBoolean("readSmsPasswords"));
-        }
-
-        if (map.hasKey("enableBanksRwd")) {
-            settingsParams.setEnableBanksRwd(map.getBoolean("enableBanksRwd"));
-        }
-
-        if (map.hasKey("banksRwdConfigUrl")) {
-            settingsParams.setBanksRwdConfigUrl(map.getString("banksRwdConfigUrl"));
-        }
-
-        return settingsParams;
     }
 
     @Override

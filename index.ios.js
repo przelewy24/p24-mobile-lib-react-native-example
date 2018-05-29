@@ -22,7 +22,14 @@ var testMerchantID = 64195;
 var testCrcSandbox = "d27e4cb580e9bbfe";
 var testCrcSecure = "b36147eeac447028";
 var sandboxEnabled = false;
+var certificatePinningEnabled = true;
 var inputValue = 'E5CA68A4A0-A7E322-473964-C0D39A715A';
+
+setupCertificatePinning();
+
+function setupCertificatePinning() {
+  P24LibModule.setCertificatePinningEnabled(certificatePinningEnabled);
+}
 
 function setSandboxEnabled(isEnabled) {
   sandboxEnabled = isEnabled;
@@ -30,13 +37,6 @@ function setSandboxEnabled(isEnabled) {
 
 function setInputValue(text) {
   inputValue = text;
-}
-
-function getSettingsParams() {
-  return {
-    saveBankCredentials : true,
-    enableBanksRwd : true,
-  };
 }
 
 function getTestTransactionParams() {
@@ -98,8 +98,7 @@ function getUUID() {
 async function doTrnRequest() {
   var trnRequestParams = {
     token : inputValue,
-    isSandbox : sandboxEnabled,
-    settingsParams : getSettingsParams()
+    isSandbox : sandboxEnabled
   };
 
   P24LibModule.startTrnRequestWithParams(
@@ -119,8 +118,7 @@ async function doTrnRequest() {
 async function doTrnDirect() {
   var trnDirectParams = {
     transactionParams : getTestTransactionParams(),
-    isSandbox : sandboxEnabled,
-    settingsParams : getSettingsParams()
+    isSandbox : sandboxEnabled
   };
 
   P24LibModule.startTrnDirectWithParams(trnDirectParams,
@@ -138,8 +136,7 @@ async function doTrnDirect() {
 
 async function doExpress() {
   var expressParams = {
-    url : inputValue,
-    settingsParams : getSettingsParams()
+    url : inputValue
   };
 
   P24LibModule.startExpressWithParams(expressParams,
@@ -157,8 +154,7 @@ async function doExpress() {
 async function doPassage() {
   var trnDirectParams = {
     transactionParams : getPassageTestTransactionParams(),
-    isSandbox : sandboxEnabled,
-    settingsParams : getSettingsParams()
+    isSandbox : sandboxEnabled
   };
 
   P24LibModule.startTrnDirectWithParams(trnDirectParams,
