@@ -15,25 +15,13 @@
 
 @end
 
+@interface P24SdkConfig : NSObject
 
-@interface P24SettingsParams : NSObject
-
-@property (nonatomic, assign) BOOL saveBankCredentials;
-@property (nonatomic, assign) BOOL enableBanksRwd;
-@property (nonatomic, copy) NSString* banksRwdConfigUrl;
-
-- (instancetype) init;
-
-- (BOOL) isAnyBankSettingEnabled;
++ (BOOL) isCertificatePinningEnabled;
++ (void) setCertificatePinningEnabled: (BOOL) isEnabled;
 
 @end
 
-
-@interface BaseParams : NSObject
-
-@property (nonatomic, strong) P24SettingsParams* settings;
-
-@end
 
 
 @interface P24PassageItem : NSObject
@@ -87,7 +75,7 @@
 
 @end
 
-@interface P24TrnRequestParams : BaseParams
+@interface P24TrnRequestParams: NSObject
 
 @property (nonatomic, copy) NSString *token;
 @property (nonatomic, assign, readwrite) BOOL sandbox;
@@ -96,7 +84,7 @@
 
 @end
 
-@interface P24TrnDirectParams : BaseParams
+@interface P24TrnDirectParams: NSObject
 
 @property (nonatomic, strong) P24TransactionParams *transactionParams;
 @property (nonatomic, assign, readwrite) BOOL sandbox;
@@ -105,7 +93,7 @@
 
 @end
 
-@interface P24ExpressParams : BaseParams
+@interface P24ExpressParams: NSObject
 
 @property (nonatomic, copy) NSString *url;
 
