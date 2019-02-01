@@ -49,9 +49,9 @@ RCT_EXPORT_METHOD(startTrnDirectWithParams:(NSDictionary*)params callback:(RCTRe
   p24Handler = [P24ProtocolHandler new];
   p24Handler.rctCallback = callback;
   
-  P24TransactionParams* trasaction = [P24LibModule transactionParams:params[@"transactionParams"]];
+  P24TransactionParams* transaction = [P24LibModule transactionParams:params[@"transactionParams"]];
   
-  P24TrnDirectParams* trnParams = [[P24TrnDirectParams alloc] initWithTransactionParams:trasaction];
+  P24TrnDirectParams* trnParams = [[P24TrnDirectParams alloc] initWithTransactionParams:transaction];
   trnParams.sandbox = [@"true" isEqualToString:params[@"isSandbox"]];
   
   dispatch_sync(dispatch_get_main_queue(), ^{
@@ -80,21 +80,31 @@ RCT_EXPORT_METHOD(startExpressWithParams:(NSDictionary*)params callback:(RCTResp
 
 + (P24TransactionParams*) transactionParams: (NSDictionary*) params {
   P24TransactionParams* transaction = [P24TransactionParams new];
+ 
+  // required
   transaction.merchantId = [params[@"merchantId"] intValue];
   transaction.crc = params[@"crc"];
   transaction.sessionId = params[@"sessionId"];
-  transaction.address = params[@"address"];
   transaction.amount = [params[@"amount"] intValue];
-  transaction.city = params[@"city"];
-  transaction.zip = params[@"zip"];
-  transaction.client = params[@"client"];
-  transaction.country = params[@"country"];
-  transaction.language = params[@"language"];
   transaction.currency = params[@"currency"];
-  transaction.email = params[@"email"];
-  transaction.phone = params[@"phone"];
   transaction.desc = params[@"description"];
+  transaction.email = params[@"email"];
+  transaction.country = params[@"country"];
   
+  // optional
+  transaction.client = params[@"client"];
+  transaction.address = params[@"address"];
+  transaction.zip = params[@"zip"];
+  transaction.city = params[@"city"];
+  transaction.phone = params[@"phone"];
+  transaction.language = params[@"language"];
+  transaction.method = [params[@"method"] intValue];
+  transaction.urlStatus = params[@"urlStatus"];
+  transaction.timeLimit = [params[@"timeLimit"] intValue];
+  transaction.channel = [params[@"channel"] intValue];
+  transaction.shipping = [params[@"shipping"] intValue];
+  transaction.transferLabel = params[@"transferLabel"];
+ 
   if ([params valueForKey:@"passageCart"] != nil) {
     [self setPassageCart:transaction params:params];
   }
