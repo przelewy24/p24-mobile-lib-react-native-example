@@ -52,7 +52,7 @@ RCT_EXPORT_METHOD(startTrnDirectWithParams:(NSDictionary*)params callback:(RCTRe
   P24TransactionParams* transaction = [P24LibModule transactionParams:params[@"transactionParams"]];
   
   P24TrnDirectParams* trnParams = [[P24TrnDirectParams alloc] initWithTransactionParams:transaction];
-  trnParams.sandbox = [@"true" isEqualToString:params[@"isSandbox"]];
+  trnParams.sandbox = [params[@"isSandbox"] boolValue];
   
   dispatch_sync(dispatch_get_main_queue(), ^{
     [P24 startTrnDirect:trnParams inViewController:[P24LibModule rootViewController] delegate:p24Handler];
