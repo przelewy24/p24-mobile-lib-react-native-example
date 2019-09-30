@@ -1,6 +1,5 @@
 <resources>
 
-
     <style name="P24MobileLibTheme" parent="Theme.AppCompat.Light.DarkActionBar">
 
         <item name="actionBarStyle">@style/P24MobileLibActionBarStyle</item>

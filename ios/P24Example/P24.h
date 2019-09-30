@@ -9,9 +9,49 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+@interface P24CardData : NSObject
+
+@property (nonatomic, copy, readonly) NSString * number;
+@property (nonatomic, assign) int month;
+@property (nonatomic, assign) int year;
+@property (nonatomic, copy, readonly) NSString * cvv;
+
+
+- (id) initWithCardNumber:(NSString *) number month:(int) month year:(int) year cvv:(NSString *) cvv;
+
+@end
+
+@interface P24RegisterCardParams : NSObject
+
+@property (nonatomic, copy, readonly) NSString * url;
+@property (nonatomic, copy, readonly) P24CardData * data;
+
+- (id) initWithUrl:(NSString *) url;
+- (id) initWithUrl:(NSString *) url data:(P24CardData *) data;
+
+@end
+
+@interface P24RegisterCardResult : NSObject
+
+@property (nonatomic, assign, readonly) NSString * cardToken;
+
+- (id) initWithCardToken:(NSString*) cardToken;
+
+@end
+
+
+@protocol P24RegisterCardDelegate <NSObject>
+
+- (void) p24RegisterCardSuccess:(P24RegisterCardResult *) registerCardResult;
+- (void) p24RegisterCardCancel;
+- (void) p24RegisterCardError:(NSString*) errorCode;
+
+@end
+
 @interface P24 : NSObject
 
 + (NSString *) sdkVersion;
++ (void)startRegisterCard:(P24RegisterCardParams *)params inViewController:(UIViewController *)viewController delegate:(id<P24RegisterCardDelegate>) delegate;
 
 @end
 
@@ -101,6 +141,38 @@
 
 @end
 
+@protocol P24ApplePayTransactionRegistrarDelegate <NSObject>
+
+@required
+
+- (void) onRegisterSuccess: (NSString*) token;
+- (void) onRegisterCanceled;
+
+@end
+
+@protocol P24ApplePayTransactionRegistrar <NSObject>
+
+@required
+
+- (void)exchange: (NSString*) applePayToken delegate: (id<P24ApplePayTransactionRegistrarDelegate>) delegate;
+
+@end
+
+@interface P24ApplePayParams: NSObject
+
+@property (nonatomic, copy) NSString *appleMerchantId;
+@property (nonatomic, assign) int amount;
+@property (nonatomic, copy) NSString *currency;
+@property (weak) id<P24ApplePayTransactionRegistrar> registrar;
+@property (nonatomic, assign, readwrite) BOOL sandbox;
+
+- (instancetype)initWithAppleMerchantId:(NSString *)appleMerchantId
+                                 amount: (int)amount
+                               currency:(NSString *)currency
+                              registrar: (id<P24ApplePayTransactionRegistrar>) registrar;
+
+@end
+
 @protocol P24TransferDelegate <NSObject>
 
 @required
@@ -111,6 +183,16 @@
 
 @end
 
+@protocol P24ApplePayDelegate <NSObject>
+
+@required
+
+- (void)p24ApplePayOnSuccess;
+- (void)p24ApplePayOnCanceled;
+- (void)p24ApplePayOnError: (NSString*) errorCode;
+
+@end
+
 @interface P24 (Secure)
 
 + (void)startTrnRequest:(P24TrnRequestParams *)params inViewController:(UIViewController *)parent delegate:(id<P24TransferDelegate>) delegate;
@@ -118,5 +200,7 @@
 + (void)startTrnDirect:(P24TrnDirectParams *)params inViewController:(UIViewController *)parent delegate:(id<P24TransferDelegate>) delegate;
 
 + (void)startExpress:(P24ExpressParams *)params inViewController:(UIViewController *)parent delegate:(id<P24TransferDelegate>) delegate;
+
++ (void)startApplePay:(P24ApplePayParams *)params inViewController:(UIViewController *)parent delegate:(id<P24ApplePayDelegate>) delegate;
 
 @end

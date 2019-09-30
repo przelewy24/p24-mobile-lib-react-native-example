@@ -59,7 +59,8 @@ public class P24LibModule extends ReactContextBaseJavaModule implements Activity
                 .setSandbox(trnRequestParams.getBoolean("isSandbox"));
 
         Intent intent = TransferActivity.getIntentForTrnRequest(getCurrentActivity(), params);
-        getCurrentActivity().startActivityForResult(intent, P24_ACTIVITY_CODE);
+        Activity currentActivity = getCurrentActivity();
+        currentActivity.startActivityForResult(intent, P24_ACTIVITY_CODE);
     }
 
     @ReactMethod
