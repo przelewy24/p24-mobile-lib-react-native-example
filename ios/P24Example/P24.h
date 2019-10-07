@@ -48,32 +48,10 @@
 
 @end
 
-@interface P24RpcParams: NSObject
-
-@property (nonatomic, copy, readonly) NSString *token;
-@property (nonatomic, copy, readonly) NSString *blikCode;
-@property (nonatomic, assign, readwrite) BOOL sandbox;
-
-- (id) initWithToken:(NSString *) token;
-- (id) initWithToken:(NSString *) token blikCode:(NSString *) blikCode;
-- (BOOL) hasBlikCodeSet;
-
-@end
-
-
-@protocol P24RpcDelegate <NSObject>
-
-- (void) p24RpcCompleted;
-- (void) p24RpcCanceled;
-- (void) p24RpcError: (NSString*) errorCode;
-
-@end
-
 @interface P24 : NSObject
 
 + (NSString *) sdkVersion;
 + (void)startRegisterCard:(P24RegisterCardParams *)params inViewController:(UIViewController *)viewController delegate:(id<P24RegisterCardDelegate>) delegate;
-+ (void) startRpc:(P24RpcParams *) params inViewController:(UIViewController *) viewController delegate:(id<P24RpcDelegate>) delegate;
 
 @end
 

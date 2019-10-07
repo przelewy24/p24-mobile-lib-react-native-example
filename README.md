@@ -27,7 +27,7 @@ react-native run-android
 ```bash
 npm install
 ```
-- Than, in iOS catalog, to resolve dependencies:
+- Then, in iOS catalog, to resolve dependencies:
 ```bash
 pod install
 ```
