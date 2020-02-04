@@ -72,7 +72,7 @@
 @interface P24 : NSObject
 
 + (NSString *) sdkVersion;
-+ (void)startRegisterCard:(P24RegisterCardParams *)params inViewController:(UIViewController *)viewController delegate:(id<P24RegisterCardDelegate>) delegate;
++ (void) startRegisterCard:(P24RegisterCardParams *)params inViewController:(UIViewController *)viewController delegate:(id<P24RegisterCardDelegate>) delegate;
 + (void) startRpc:(P24RpcParams *) params inViewController:(UIViewController *) viewController delegate:(id<P24RpcDelegate>) delegate;
 
 @end
@@ -80,7 +80,10 @@
 @interface P24SdkConfig : NSObject
 
 + (BOOL) isCertificatePinningEnabled;
++ (BOOL) isExitOnBackButtonEnabled;
+
 + (void) setCertificatePinningEnabled: (BOOL) isEnabled;
++ (void) setExitOnBackButtonEnabled: (BOOL) isEnabled;
 
 @end
 
