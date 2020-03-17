@@ -108,7 +108,7 @@
 @property (nonatomic, strong, readonly) NSArray* items;
 
 - (void) addItem: (P24PassageItem*) item;
-
+- (int) getSummaryPrice;
 @end
 
 @interface P24TransactionParams : NSObject
